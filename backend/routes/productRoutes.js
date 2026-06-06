@@ -86,7 +86,7 @@ router.post('/', upload.array('media', 5), async (req, res) => {
             description: description,
             price: price,
             category: category,
-            coountInStock: countInStock,
+            countInStock: countInStock,
             isFeatured: isFeatured,
             media: processedMedia
         });
