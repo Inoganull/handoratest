@@ -17,6 +17,7 @@ function ProductCard({ product }) {
         <img
           src={product.media[0]?.url}
           alt={product.title}
+          onError={(e) => e.target.src = '/placeholder.png'}
           style={{
             ...styles.image,
             transform: hovered ? 'scale(1.04)' : 'scale(1)',
@@ -33,6 +34,8 @@ function ProductCard({ product }) {
         </div>
       </div>
     </div>
+
+    
   )
 }
 

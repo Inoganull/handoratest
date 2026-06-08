@@ -66,6 +66,7 @@ function ProductPage() {
             <img
               src={product.media[selectedImage]?.url}
               alt={product.title}
+              onError={(e) => e.target.src = '/placeholder.jpg'}
               style={styles.mainImage}
             />
           </div>

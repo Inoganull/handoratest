@@ -32,7 +32,7 @@ const streamifier = require('streamifier');
             description: description,
             price: price,
             category: category,
-            coountInStock: countInStock,
+            countInStock: countInStock,
             isFeatured: isFeatured,
             media: processedMedia
         });
@@ -87,7 +87,7 @@ router.post('/', upload.array('media', 5), async (req, res) => {
             price: price,
             category: category,
             countInStock: countInStock,
-            isFeatured: isFeatured,
+            isFeatured: isFeatured === 'true',
             media: processedMedia
         });
 
@@ -134,5 +134,15 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ message: "Server error", error: error.message });
     }
 });
+
+// delete a product by id
+router.delete('/:id', async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id)
+    res.status(200).json({ message: "Product deleted" })
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting product" })
+  }
+})
 
 module.exports = router;
