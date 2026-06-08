@@ -1,10 +1,22 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 const BagContext = createContext()
 
 // This wraps your whole app and shares bag data everywhere
 export function BagProvider({ children }) {
-  const [bagItems, setBagItems] = useState([])
+  const [bagItems, setBagItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem('bagItems')
+      return saved ? JSON.parse(saved) : []
+    } catch (error) {
+      console.error("Error loading bag items from localStorage:", error)
+      return []
+    }
+  })
+
+  useEffect(() => {
+    localStorage.setItem('bagItems', JSON.stringify(bagItems))
+  }, [bagItems])
 
   // Add product to bag
   const addToBag = (product) => {
@@ -52,6 +64,11 @@ export function BagProvider({ children }) {
     )
   }
 
+  //Clear entire bag
+  const clearBag = () => {
+    setBagItems([])
+  }
+
   // Total number of items (for navbar badge)
   const totalCount = bagItems.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -67,6 +84,7 @@ export function BagProvider({ children }) {
       removeFromBag,
       increaseQty,
       decreaseQty,
+      clearBag,
       totalCount,
       totalPrice
     }}>
